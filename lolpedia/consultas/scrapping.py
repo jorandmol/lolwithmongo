@@ -10,6 +10,7 @@ NO_DATA = "Sin datos"
 class LoL_pedia():
 
     seasons = []
+    competitions = []
 
     def get_seasons(self):
         seasons = []
@@ -24,6 +25,21 @@ class LoL_pedia():
             seasons.append((season_year,season_url))
         self.seasons = seasons
 
-if __name__ == "__main__":
-    base = LoL_pedia()
-    base.get_seasons()
+    def get_competitions_until17(self):
+        comp = []
+        regions = ["China","South Korea","Europe","North America"]
+        for season in self.seasons[1:7]:
+            f = urllib.request.urlopen(season[1])
+            s = BeautifulSoup(f, "lxml")
+            content = s.find("div", id="global-wrapper").find("div", id="pageWrapper").find(id="bodyContent")
+            tabla = content.find("div", id="mw-content-text").find("div", class_="mw-parser-output").find("div", class_="mw-parser-output").find("table", class_="navbox").tbody.find("table")
+            trows = tabla.find_all("tr")
+            for tr in trows:
+                if tr.find("td"):
+                    region = tr.find("td").get_text()
+                    if region in regions:
+                        datos_comp = tr.find("td").next_sibling.find_all("li")
+                        for c in datos_comp:
+                            d = c.a
+                            comp.append((season[0],region,d.get_text(),d["href"]))
+        self.competitions = comp
