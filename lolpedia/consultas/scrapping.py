@@ -3,8 +3,6 @@ import urllib.request
 import datetime
 import re
 
-# Funciones para hacer scrapping de la web
-
 URL_BASE = "https://lol.fandom.com"
 INITIAL_YEAR = 2018
 NO_DATA = "Sin datos"
