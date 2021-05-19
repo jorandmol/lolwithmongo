@@ -13,6 +13,10 @@
 <body>
     <div class="container">
         <div class="row justify-content-center">
+            <a href="/carga_bd">Cargar base de datos</a>
+            {% if message %}
+                <p>{{message}}</p>
+            {% endif %}
             <form action="#" class="col-6">
                 <label for="buscador" class="form-label">Buscador</label>
                 <input type="text" id="buscador" class="form-control mb-3">

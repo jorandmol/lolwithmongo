@@ -21,5 +21,5 @@ from consultas import urls as consultas_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('consulta/', include(consultas_urls)),
+    path('', include(consultas_urls)),
 ]

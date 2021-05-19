@@ -16,8 +16,7 @@ def get_team_clas(standings):
         team_data = pos.find_all("td")
         team_pos = team_data[0].get_text()
         team_res = team_data[2].get_text()
-        team_vic = team_data[3].get_text()
-        res.append((team_pos,team_name,team_res,team_vic))
+        res.append((team_pos,team_name,team_res))
     return res
 
 class LoL_pedia():
@@ -27,9 +26,7 @@ class LoL_pedia():
 
     def get_data(self):
         self.get_competitions()
-        print("Se han almacenado " + len(self.competitions) + " competiciones en total")
         self.get_splits()
-        print("con sus respectivos " + len(self.splits) + " splits")
 
     def get_competitions(self):
         year_now = datetime.datetime.now().year
