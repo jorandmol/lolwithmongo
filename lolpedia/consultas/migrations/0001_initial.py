@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=280)),
-                ('split', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='consultas.Split')),
+                ('split', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='consultas.Split')),
             ],
         ),
         migrations.CreateModel(
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 ('team', models.CharField(max_length=280)),
                 ('wins', models.IntegerField()),
                 ('loses', models.IntegerField()),
-                ('split', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='consultas.Split')),
+                ('split', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='consultas.Split')),
             ],
         ),
         migrations.CreateModel(

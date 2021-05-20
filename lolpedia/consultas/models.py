@@ -13,7 +13,7 @@ class Split(models.Model):
 
 class Round(models.Model):
     name = models.CharField(max_length=280)
-    split = models.OneToOneField(Split, on_delete=models.CASCADE)
+    split = models.ForeignKey(Split, on_delete=models.CASCADE)
 
 class Match(models.Model):
     round = models.ForeignKey(Round, on_delete=models.CASCADE)
@@ -22,7 +22,7 @@ class Match(models.Model):
     result = models.CharField(max_length=280)
 
 class Position(models.Model):
-    split = models.OneToOneField(Split, on_delete=models.CASCADE)
+    split = models.ForeignKey(Split, on_delete=models.CASCADE)
     place = models.CharField(max_length=280)
     team = models.CharField(max_length=280)
     wins = models.IntegerField()
