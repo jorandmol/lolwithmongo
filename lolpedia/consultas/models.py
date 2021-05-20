@@ -1,7 +1,7 @@
-from django.db import models
+from djongo import models
 
 class Season(models.Model):
-    year = models.IntegerField(unique=True)
+    year = models.IntegerField()
 
 class League(models.Model):
     name = models.CharField(max_length=280)
