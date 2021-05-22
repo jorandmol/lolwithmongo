@@ -14,5 +14,5 @@ El entorno virtual permitirá instalar todas las dependencias, que están dispon
 - Una vez esté completado este paso, activar la base de datos de MongoDB y ejecutar `.\lolpedia\manage.py migrate` para realizar las migraciones.
 - Por último, el comando `.\lolpedia\manage.py runserver` posibilitará interactuar con el sistema.
 
-Tras todo ello, es posible acceder al mismo visitando [https://localhost:8000](https://localhost:8000). 
+Tras todo ello, es posible acceder al mismo visitando [http://localhost:8000](localhost:8000). 
 
