@@ -1,0 +1,45 @@
+body {
+    padding-bottom: 3rem;
+}
+
+.contenido {
+    border: 1px solid #4472c4;
+    padding: 1rem;
+    background-color: #cad7ee;
+}
+
+.season {
+    background-color: white;
+    text-align: center;
+    border: 1px solid #4472c4;
+    border-radius: 20px;
+}
+
+.split {
+    background-color: white;
+    text-align: center;
+    border: 1px solid #4472c4;
+    border-radius: 20px;
+    margin: 1rem 2rem;
+    padding: 1rem;
+}
+
+h5 {
+    color: #4472c4;
+    font-weight: bold;
+}
+
+.btn.btn-primary.league {
+    color: white;
+    text-decoration: unset;
+    background-color: #042d74;
+    text-decoration: unset;
+    border-radius: 10px;
+    border: 1px solid #4472c4;
+}
+
+.btn.btn-primary.league:hover,
+.btn.btn-primary.league:active,
+.btn.btn-primary.league:focus {
+    background-color: #4472c4;
+}

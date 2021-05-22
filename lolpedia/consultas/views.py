@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.urls import reverse
+from urllib.parse import urlencode
 from django.views.generic import TemplateView
 from consultas.scrapping import  LoL_pedia
 from consultas.models import Position,Season,Split,Match,Round,League
@@ -7,16 +9,63 @@ from consultas.models import Position,Season,Split,Match,Round,League
 class ConsultasView(TemplateView):
     template_name = 'buscador.html'
 
+    def get_context_data(self, **kwargs):
+        try:
+            context = super().get_context_data(**kwargs)
+            context['seasons'] = Season.objects.all()
+
+            return context
+
+        except Exception:
+            context = {'error_message': 'Ha ocurrido un error inesperado'}
+            return render(self.request, 'base/error.html', context)
+
+class LeagueView(TemplateView):
+    template_name = 'league.html'
+
+    def get_context_data(self, **kwargs):
+        try:
+            context = super().get_context_data(**kwargs)
+            league_id = self.kwargs.get('pk')
+            league = League.objects.get(id=int(league_id))
+            # Stats
+            stats = []
+            for split in league.split_set.all():
+                n_rounds = split.round_set.count()
+                more_wins = split.position_set.all().order_by('-wins')[0]
+                more_loses = split.position_set.all().order_by('-loses')[0]
+                if n_rounds > 0:
+                    final = split.round_set.all()[n_rounds-1]
+                    final_game = final.match_set.all()[0]
+                    result = final_game.result.split(" - ")
+                    if int(result[0]) >  int(result[1]):
+                        winner = final_game.home
+                    else:
+                        winner = final_game.visitor
+                else:
+                    winner = "-"
+                stats.append((more_wins,more_loses,winner))
+
+            context['league'] = league
+            context['stats'] = stats
+
+            return context
+
+        except Exception:
+            context = {'message': 'There was an error'}
+            return render(self.request, 'buscador.html', context)
+
 def CargaDatos(request):
     bd = LoL_pedia()
     try:
         bd.get_data()
         l_dict = carga_seasons(bd)
         carga_splits(l_dict,bd)
-        message = "La carga se ha realizado de manera satisfactoria"
+        message = "Load data completed"
+        return redirect("/")
     except:
-        message = "No se ha podido cargar la base de datos"
-    return render(request, 'buscador.html', {'message': message})
+        message = "Data could not be stored"
+        return render(request, 'buscador.html', {'message': message})
 
 def carga_seasons(bd):
     Season.objects.all().delete()
@@ -54,7 +103,8 @@ def carga_splits(l_dict,bd):
         # Knockout
         rounds = info_matches(reg[4])
         for r in rounds:
-            round = Round(name=r,split=split)
+            r_name = r.replace("round","Round ")
+            round = Round(name=r_name,split=split)
             round.save()
             aux = list(filter(lambda x: x[0]==r,reg[4]))
             n_matches = len(aux)/2

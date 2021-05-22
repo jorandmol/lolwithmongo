@@ -1,0 +1,106 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <title>MongoLol</title>
+</head>
+<body>
+    <div class="container-fluid mb-1">
+        <div class="row text-center">
+            <div class="col-8 mx-auto">
+                <a href="/"><img class="img-fluid" src="{% static 'images/logo-mongolol.png' %}" alt="Logotipo de MongoLol"></a>
+            </div>
+        </div>
+    </div>
+    <div class="container contenido mb-3">
+        <div class="row justify-content-center">
+            {% if league %}
+            <div class="col-12 text-center league-info">
+                <h3>{{league.name}} - {{league.season.year}}</h3>
+            </div>
+            <div class="col-12 text-center stats">
+                {% for st in stats %}
+                <strong>{{st.0.split.name}}</strong>
+                <div class="row">
+                    <div class="col-4">
+                        More wins: {{st.0.team}} ({{st.0.wins}})
+                    </div>
+                    <div class="col-4">
+                        More loses: {{st.1.team}} ({{st.1.loses}})
+                    </div>
+                    <div class="col-4">
+                        Winner: {{st.2}}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-12 splits">
+                {% for split in league.split_set.all %}
+                <div class="row text-center split">
+                    <div class="col-12 mt-2">
+                        <h4>{{split.name}} Split</h4>
+                    </div>
+                    {% if split.position_set.all %}
+                    <div class="col-6">
+                        <h5>Standings</h5>
+                        {% for pos in split.position_set.all %}
+                        <div class="row">
+                            <div class="col-3">
+                                {{pos.place}}
+                            </div>
+                            <div class="col-6">
+                                {{pos.team}}
+                            </div>
+                            <div class="col-3">
+                                {{pos.wins}} - {{pos.loses}}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if split.round_set.all %}
+                    <div class="col-6">
+                        <h5>Knockout</h5>
+                        {% for round in split.round_set.all reversed %}
+                        <div class="row">
+                            <div class="col-12">
+                            {% if forloop.first %}
+                            <strong>Final</strong>
+                            {% else %}
+                            <strong>{{round.name}}</strong>
+                            {% endif %}
+                            </div>
+                            {% if round.match_set.all %}
+                            {% for match in round.match_set.all %}
+                            <div class="col-12">
+                                {{match.home}} {{match.result}} {{match.visitor}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>No data about this competition</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>
